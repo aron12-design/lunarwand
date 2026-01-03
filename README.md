@@ -1,12 +1,7 @@
-# LunarWand
+# LunarWand (GitHub Actions - Maven)
 
-Paper plugin (1.21.x)
+## Build on GitHub
+Push any commit -> Actions builds the plugin jar and uploads it as an artifact.
 
-## Build (GitHub Actions)
-Push to `main` → Actions builds a jar and uploads it as an artifact.
-
-## Local build (optional)
-- Install JDK 17
-- Install Gradle
-- Run: `gradle build`
-Jar: `build/libs/`
+## Where is the JAR?
+Actions -> Build LunarWand -> Artifacts -> LunarWand-JAR

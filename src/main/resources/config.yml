@@ -1,7 +1,7 @@
 wand:
   material: BLAZE_ROD
   custom-model-data: 777001
-  itemsadder-id: ""   # e.g. galaxy:lunar_wand (optional)
+  itemsadder-id: ""   # optional: galaxy:lunar_wand
   name: "§d☾ Lunár Kígyó Pálca"
   lore:
     - "§7Sebzés: §c150"
