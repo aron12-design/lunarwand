@@ -17,18 +17,10 @@ jobs:
           java-version: "17"
           cache: maven
 
-      # Debug: hogy lásd a fájlokat a runneren
-      - name: Show tree
-        run: |
-          ls -la
-          ls -la LunarWand || true
-          ls -la LunarWand/src/main || true
-
-      - name: Build (Maven)
-        working-directory: LunarWand
-        run: mvn -B -ntp -f pom.xml clean package
+      - name: Build with Maven
+        run: mvn -B -ntp clean package
 
       - uses: actions/upload-artifact@v4
         with:
           name: LunarWand-JAR
-          path: LunarWand/target/*.jar
+          path: target/*.jar
