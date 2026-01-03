@@ -6,6 +6,7 @@
   <groupId>hu.galaxy</groupId>
   <artifactId>lunarwand</artifactId>
   <version>1.0.0</version>
+  <name>LunarWand</name>
 
   <properties>
     <maven.compiler.release>17</maven.compiler.release>

@@ -1,7 +1,7 @@
-# LunarWand (GitHub Actions - Maven)
+# LunarWand (Fresh Repo)
 
-## Build on GitHub
-Push any commit -> Actions builds the plugin jar and uploads it as an artifact.
+## GitHub Actions build
+Push -> Actions -> Artifact `LunarWand-JAR`
 
-## Where is the JAR?
-Actions -> Build LunarWand -> Artifacts -> LunarWand-JAR
+## Commands
+- /lunarwand give

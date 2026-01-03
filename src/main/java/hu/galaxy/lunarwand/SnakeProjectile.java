@@ -27,7 +27,7 @@ public class SnakeProjectile {
         public double baseDamage = 150.0;
         public double headshotMultiplier = 1.8;
 
-        public Particle particle = Particle.END_ROD;
+        public Particle particle = Particle.DUST;
         public Color dustColor = Color.fromRGB(80,255,120);
         public float dustSize = 1.2f;
 
@@ -42,7 +42,7 @@ public class SnakeProjectile {
             s.waveFrequency = c.getDouble("projectile.wave.frequency", 0.65);
 
             String p = c.getString("projectile.particle.type", "DUST");
-            try { s.particle = Particle.valueOf(p.trim().toUpperCase()); } catch (Throwable ignored) { s.particle = Particle.END_ROD; }
+            try { s.particle = Particle.valueOf(p.trim().toUpperCase()); } catch (Throwable ignored) { s.particle = Particle.DUST; }
 
             String rgb = c.getString("projectile.particle.rgb", "80,255,120");
             try {
@@ -54,7 +54,6 @@ public class SnakeProjectile {
             } catch (Throwable ignored) {}
 
             s.dustSize = (float) c.getDouble("projectile.particle.size", 1.2);
-
             return s;
         }
     }
@@ -63,7 +62,6 @@ public class SnakeProjectile {
         final World world = start.getWorld();
         final Vector dir = direction.clone().normalize();
 
-        // Two orthogonal vectors for wave
         Vector up = new Vector(0, 1, 0);
         Vector right = dir.clone().crossProduct(up);
         if (right.lengthSquared() < 1e-6) right = new Vector(1, 0, 0);
@@ -82,13 +80,10 @@ public class SnakeProjectile {
                 t++;
                 if (t > maxTicks) { cancel(); return; }
 
-                // advance forward
                 pos.add(dir.clone().multiply(s.step));
 
-                // stop on solid block
                 if (pos.getBlock().getType().isSolid()) { cancel(); return; }
 
-                // wave offset
                 double phase = t * s.waveFrequency;
                 double x = Math.sin(phase) * s.waveAmplitude;
                 double y = Math.cos(phase * 0.8) * (s.waveAmplitude * 0.35);
@@ -97,7 +92,6 @@ public class SnakeProjectile {
                         .add(right.clone().multiply(x))
                         .add(upOrtho.clone().multiply(y));
 
-                // body particles
                 for (int i = 0; i < Math.max(1, s.bodyPoints); i++) {
                     Location p = wavePos.clone().subtract(dir.clone().multiply(i * s.bodySpacing));
                     if (s.particle == Particle.DUST) {
@@ -107,18 +101,16 @@ public class SnakeProjectile {
                     }
                 }
 
-                // hit check
                 for (Entity e : world.getNearbyEntities(wavePos, s.hitRadius, s.hitRadius, s.hitRadius)) {
                     if (!(e instanceof LivingEntity target)) continue;
                     if (!target.isValid() || target.isDead()) continue;
                     if (damager != null && e.getUniqueId().equals(damager.getUniqueId())) continue;
 
-                    // By default: no PVP. Remove this if you want players to be hittable.
+                    // no pvp by default
                     if (target instanceof Player) continue;
 
                     double dmg = s.baseDamage;
 
-                    // headshot: closer to eye than mid-body AND within small radius
                     Location head = target.getEyeLocation();
                     Location body = target.getLocation().add(0, target.getHeight() * 0.5, 0);
 
